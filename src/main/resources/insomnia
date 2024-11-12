@@ -1,0 +1,29 @@
+ Em application.properties faça as seguintes configurações :
+ spring.datasource.username=MYSQL_USER ( Coloque seu Usuario do Banco de Dados )
+ spring.datasource.password=MYSQL_PASSWORD ( Coloque sua Senha do Banco de Dados )
+
+ GET \\\\\\ http://localhost:8080/relatorios (Lista todos os Relatorios )
+ GET \\\\\\ http://localhost:8080/relatorios/ID (Lista 1 Relatorios pelo ID )
+
+
+ POST \\\\\\  http://localhost:8080/relatorios ( Cadastra 1 Relatorios  )
+ {
+  "titulo": "___________",
+  "materia": "______",
+  "mensagem": "____________________________________",
+  "status": "RELATORIO_NAO_RESPONDIDO",
+  "professor": {
+    "nome": "________",
+    "telefone": "_______",
+    "email": "_______"
+  }
+}
+
+PUT \\\\\\  http://localhost:8080/relatorios ( Altera/Atualiza 1 Relatorios pelo ID  )
+{ "id":1 ,
+  "titulo": "_________",
+  "mensagem": "__________",
+  "status": "RELATORIO_RESPONDIDO"
+}
+
+DELET \\\\\\  http://localhost:8080/relatorios/ID ( Exclui/Deleta 1 Relatorios pelo ID  )
