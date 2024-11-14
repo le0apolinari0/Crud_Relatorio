@@ -45,11 +45,12 @@ public class RelatorioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
-    @PutMapping
-    public ResponseEntity<Relatorio> atualizar(@RequestBody @Valid AtualizarRelatorio dados) {
-        Relatorio relatorio = service.atualizarRelatorio(dados);
-        return ResponseEntity.ok(relatorio);
+    @PutMapping("/{id}")
+    public ResponseEntity<Relatorio> atualizarRelatorio(@PathVariable Long id, @RequestBody AtualizarRelatorio dados) {
+        Relatorio relatorioAtualizado = service.atualizarRelatorio(id, dados);
+        return ResponseEntity.ok(relatorioAtualizado);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable Long id) {

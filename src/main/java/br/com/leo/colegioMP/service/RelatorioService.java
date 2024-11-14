@@ -6,20 +6,15 @@ import br.com.leo.colegioMP.model.report.Relatorio;
 import br.com.leo.colegioMP.repository.RelatorioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
+
 
 
 @Service
@@ -44,11 +39,12 @@ public class RelatorioService {
     @Transactional
     @CacheEvict(value = "relatorios", key = "#dados.getId")
     @CachePut(value = "relatorios", key = "#result.getId")
-    public Relatorio atualizarRelatorio(AtualizarRelatorio dados) {
-        Relatorio relatorioExistente = repository.findById(dados.getId()).orElseThrow();
+    public Relatorio atualizarRelatorio(Long id, AtualizarRelatorio dados) {
+        Relatorio relatorioExistente = repository.findById(id).orElseThrow();
         relatorioExistente.atualizarRelatorio(dados);
         return repository.save(relatorioExistente);
     }
+
 
     @Transactional
     @CacheEvict(value = "relatorios", key = "#id")
