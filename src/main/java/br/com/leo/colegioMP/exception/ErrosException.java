@@ -5,11 +5,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
@@ -17,37 +19,35 @@ import java.util.List;
 public class ErrosException {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErroResposta> tratarErro404(EntityNotFoundException e) {
-        ErroResposta erro = new ErroResposta("Registro não encontrado", e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    public ResponseEntity tratarErro404(EntityNotFoundException ex) {
+        return ResponseEntity.notFound().build();
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroResposta> tratarErro400(MethodArgumentNotValidException ex) {
+    public ResponseEntity tratarErro400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-        List<ErroResposta.DadosErroValidacao> erroRespostas = erros.stream()
-                .map(erro -> new ErroResposta.DadosErroValidacao(erro.getField(), erro.getDefaultMessage(), erro.getRejectedValue()))
-                .toList();
-        ErroResposta resposta = new ErroResposta("Erro de validação, ID pode esta Incorreto !", erroRespostas.toString());
-
-        return ResponseEntity.badRequest().body(resposta);
+        return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErroResposta> tratarErro400(HttpMessageNotReadableException ex) {
-        ErroResposta erro = new ErroResposta("Erro de digitação verifique a forma de preenchimento ", ex.getMessage());
-        return ResponseEntity.badRequest().body(erro);
+    public ResponseEntity tratarErro400(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErroResposta> tratarErro500(Exception ex) {
-        ErroResposta erro = new ErroResposta(
-                "Erro interno do servidor,Verifique seu Endereço Web Digitado por Exemplo !",
-                ex.getLocalizedMessage()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
+    public ResponseEntity tratarErro500(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " +ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(ErroResposta.class)
+    public ResponseEntity tratarErroDeNegocio(ErroResposta ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    private record DadosErroValidacao(String campo, String mensagem) {
+        public DadosErroValidacao(FieldError erro) {
+            this(erro.getField(), erro.getDefaultMessage());
+        }
     }
 }
 

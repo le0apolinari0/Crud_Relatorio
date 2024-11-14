@@ -2,33 +2,18 @@ package br.com.leo.colegioMP.exception;
 
 import lombok.Getter;
 @Getter
-public class ErroResposta {
+public class ErroResposta extends RuntimeException {
+        private String codigo;
+        private String detalhes;
 
-    private final String mensagem;
-    private final String detalhe;
-
-    public ErroResposta(
-            String mensagem,
-            String detalhe) {
-        this.mensagem = mensagem;
-        this.detalhe = detalhe;
-    }
-
-    public static class DadosErroValidacao {
-
-        private final String campo;
-        private final String mensagem;
-        private final Object valorRejeitado;
-
-        public DadosErroValidacao(
-                String campo,
+        public ErroResposta(
                 String mensagem,
-                Object valorRejeitado) {
-            this.campo = campo;
-            this.mensagem = mensagem;
-            this.valorRejeitado = valorRejeitado;
+                String codigo,
+                String detalhes) {
+            super(mensagem);
+            this.codigo = codigo;
+            this.detalhes = detalhes;
         }
-    }
 }
 
 
