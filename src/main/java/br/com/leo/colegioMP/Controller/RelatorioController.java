@@ -31,13 +31,6 @@ public class RelatorioController {
         Relatorio relatorio = service.buscarRelatorioPorId(id);
         return ResponseEntity.ok(relatorio);
     }
-    @GetMapping
-    public ResponseEntity<Page<ListagemRelatorio>> listarRelatorios(
-            @PageableDefault(size = 10 , sort = {"dataCriacao"}) Pageable paginacao) {
-        return ResponseEntity.ok(repository.findAllBy(paginacao).map(
-                relatorio -> new ListagemRelatorio(relatorio)
-        ));
-    }
 
     @PostMapping
     public ResponseEntity<Relatorio> cadastrar(@RequestBody @Valid CadastroRelatorio dados) {
