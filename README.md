@@ -4,17 +4,17 @@
 ## Conhecimentos posto em pratica.
 
 - Criando CRUD Relatorios
-- Aprendendo isolar códigos de regras de negócio em uma aplicação
+- Isolando códigos de regras de negócio em uma aplicação
 - Implemente princípios em SOLID
 - Utilizando DTOs para representar as informações de input/output da API
 - Realizando validações utilizando o Bean Validation
-- Aprendendo a seguir corretamente os princípios do modelo REST
+- Seguir corretamente os princípios do modelo REST
 - Tratando exceptions na API
 - utilizando o Spring Data JPA para a camada de persistência da API
 - utilizando o Flyway como ferramenta de migrations
 - utilizando  paginação e ordenação nas consultas ao banco de dados
 - utilizando  cache Spring Boot para melhorar a performance de consultas
-- Aprendendo a acessar a interface do EntityManager
+- Boa praticas em acessar a interface do EntityManager
 
 ## Protótipo de Telas
 
